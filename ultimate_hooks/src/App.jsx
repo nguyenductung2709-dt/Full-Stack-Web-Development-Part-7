@@ -16,22 +16,35 @@ const useField = (type) => {
 }
 
 const useResource = (baseUrl) => {
-  const [resources, setResources] = useState([])
+  const [resources, setResources] = useState([]);
 
-  // ...
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(baseUrl);
+        setResources(response.data);
+      } catch (error) {
+        console.error('Error fetching resources:', error);
+      }
+    };
 
-  const create = (resource) => {
-    // ...
-  }
+    fetchData();
+  }, [baseUrl]);
+
+  const create = async (resource) => {
+      const response = await axios.post(baseUrl, resource);
+      setResources([...resources, response.data]);
+      return response.data;
+
+  };
 
   const service = {
-    create
-  }
+    create,
+  };
 
-  return [
-    resources, service
-  ]
-}
+  return [resources, service];
+};
+
 
 const App = () => {
   const content = useField('text')
@@ -44,11 +57,14 @@ const App = () => {
   const handleNoteSubmit = (event) => {
     event.preventDefault()
     noteService.create({ content: content.value })
+    content.onChange({ target: { value: '' } }); 
   }
  
   const handlePersonSubmit = (event) => {
     event.preventDefault()
     personService.create({ name: name.value, number: number.value})
+    name.onChange({ target: { value: '' } }); 
+    number.onChange({ target: { value: '' } }); 
   }
 
   return (
