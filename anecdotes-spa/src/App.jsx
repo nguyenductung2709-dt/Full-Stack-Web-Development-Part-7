@@ -19,7 +19,7 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => <a href = {`/anecdotes/${anecdote.id}`}><li key={anecdote.id} >{anecdote.content}</li> </a>)}
     </ul>
   </div>
 )
@@ -129,7 +129,6 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
-      <Footer />
     </div>
     <Router>
     <Routes>
