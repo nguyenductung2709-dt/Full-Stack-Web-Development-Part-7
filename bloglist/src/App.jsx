@@ -5,15 +5,17 @@ import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 import PropTypes from "prop-types";
 
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [nameOfCreator, setNameOfCreator] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
   const [loggedInUsername, setLoggedInUsername] = useState("");
 
   useEffect(() => {
@@ -48,10 +50,7 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      setErrorMessage("wrong username or password");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
+      dispatch(setNotification("wrong username or password", 2000));
     }
   };
 
@@ -65,10 +64,7 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      setErrorMessage("Error logging out");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
+      dispatch(setNotification("Error logging out", 2000));
     }
   };
 
@@ -86,12 +82,7 @@ const App = () => {
       returnedBlog.user = user;
       setNameOfCreator(user.name);
       setBlogs(blogs.concat(returnedBlog));
-      setErrorMessage(
-        `a blog ${blogObject.title} by ${blogObject.author} added`,
-      );
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
+      dispatch(setNotification(`a blog ${blogObject.title} by ${blogObject.author} added`, 2000));
     });
   };
 
@@ -107,15 +98,10 @@ const App = () => {
         );
         const sortedBlogs = updatedBlogs.sort((a, b) => b.likes - a.likes);
         setBlogs(sortedBlogs);
-        setErrorMessage(
-          `Liked blog: ${returnedBlog.title} by ${returnedBlog.author}`,
-        );
-        setTimeout(() => {
-          setErrorMessage(null);
-        }, 5000);
+        dispatch(setNotification(`Liked blog: ${returnedBlog.title} by ${returnedBlog.author}`, 2000));
       })
       .catch((error) => {
-        setErrorMessage("Failed to like the blog");
+        dispatch(setNotification("Failed to like the blog", 2000));
       });
   };
 
@@ -130,25 +116,17 @@ const App = () => {
           (blog) => blog.id !== blogToDelete.id,
         );
         setBlogs(updatedBlogs);
-        setErrorMessage(
-          `Deleted blog: ${blogToDelete.title} by ${blogToDelete.author}`,
-        );
-        setTimeout(() => {
-          setErrorMessage(null);
-        }, 5000);
+        dispatch(setNotification(`Deleted blog: ${blogToDelete.title} by ${blogToDelete.author}`, 2000));
       }
     } catch (error) {
-      setErrorMessage("Failed to delete the blog");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
+      dispatch(setNotification("Failed to delete the blog", 2000));
     }
   };
 
   if (user === null) {
     return (
       <>
-        <Notification message={errorMessage} />
+        <Notification />
         <h2>Log in to application</h2>
         <form onSubmit={handleLogin}>
           <div>
@@ -182,7 +160,7 @@ const App = () => {
   } else {
     return (
       <div>
-        <Notification message={errorMessage} />
+        <Notification/>
         <h2>blogs</h2>
         <p>{user.name} logged in</p>{" "}
         <button onClick={handleLogout}>logout</button>

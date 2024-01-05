@@ -57,7 +57,7 @@ const Blog = ({ blogs, increaseLike, deleteBlog, nameOfCreator, username }) => {
                       like
                     </button>
                   </p>
-                  {username === singleBlog.user.username && (
+                  {singleBlog.user && username === singleBlog.user.username && (
                     <button onClick={() => deleteBlog(singleBlog)}>
                       remove
                     </button>
