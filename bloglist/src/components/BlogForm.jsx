@@ -1,66 +1,66 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useState } from "react";
+import PropTypes from "prop-types";
 
 const BlogForm = ({ createBlog }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
 
   const addBlog = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     createBlog({
       title: title,
       author: author,
-      url: url
-    })
+      url: url,
+    });
 
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-  }
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+  };
 
   return (
     <form onSubmit={addBlog}>
       <div>
         title:
         <input
-          id = 'title'
+          id="title"
           type="text"
           value={title}
-          name='Title'
+          name="Title"
           onChange={({ target }) => setTitle(target.value)}
-          placeholder = 'Title'
+          placeholder="Title"
         />
       </div>
       <div>
         author:
         <input
-          id = 'author'
+          id="author"
           type="text"
           value={author}
-          name='Author'
+          name="Author"
           onChange={({ target }) => setAuthor(target.value)}
-          placeholder = "Author"
+          placeholder="Author"
         />
       </div>
       <div>
         url:
         <input
-          id = 'url'
+          id="url"
           type="text"
           value={url}
           name="Url"
           onChange={({ target }) => setUrl(target.value)}
-          placeholder = 'Url'
+          placeholder="Url"
         />
       </div>
       <button type="submit">create</button>
     </form>
-  )
-}
+  );
+};
 
 BlogForm.propTypes = {
   createBlog: PropTypes.func.isRequired,
 };
 
-export default BlogForm
+export default BlogForm;

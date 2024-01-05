@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Blog = ({ blogs, increaseLike, deleteBlog, nameOfCreator, username }) => {
   const [visibleBlogs, setVisibleBlogs] = useState({});
@@ -11,11 +11,11 @@ const Blog = ({ blogs, increaseLike, deleteBlog, nameOfCreator, username }) => {
   };
 
   const blogStyle = {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     paddingTop: 10,
     paddingLeft: 2,
-    border: 'solid',
+    border: "solid",
     borderWidth: 1,
     marginBottom: 5,
   };
@@ -25,16 +25,22 @@ const Blog = ({ blogs, increaseLike, deleteBlog, nameOfCreator, username }) => {
       {blogs.map((singleBlog, index) => {
         const likeButtonId = `like-button-${index + 1}`;
         return (
-          <div key={singleBlog.id} style={blogStyle} id='all_blogs'>
-            <div id='blog-post'>
+          <div key={singleBlog.id} style={blogStyle} id="all_blogs">
+            <div id="blog-post">
               <p>
                 {singleBlog.title} by {singleBlog.author}
                 {!visibleBlogs[singleBlog.id] ? (
-                  <button onClick={() => toggleVisibility(singleBlog.id)} style={{ marginLeft: '10px' }}>
+                  <button
+                    onClick={() => toggleVisibility(singleBlog.id)}
+                    style={{ marginLeft: "10px" }}
+                  >
                     view
                   </button>
                 ) : (
-                  <button onClick={() => toggleVisibility(singleBlog.id)} style={{ marginLeft: '10px' }}>
+                  <button
+                    onClick={() => toggleVisibility(singleBlog.id)}
+                    style={{ marginLeft: "10px" }}
+                  >
                     hide
                   </button>
                 )}
@@ -43,11 +49,18 @@ const Blog = ({ blogs, increaseLike, deleteBlog, nameOfCreator, username }) => {
                 <div>
                   <p>{singleBlog.url}</p>
                   <p>
-                    Likes: {singleBlog.likes}{' '}
-                    <button id={likeButtonId} onClick={() => increaseLike(singleBlog)}>like</button>
+                    Likes: {singleBlog.likes}{" "}
+                    <button
+                      id={likeButtonId}
+                      onClick={() => increaseLike(singleBlog)}
+                    >
+                      like
+                    </button>
                   </p>
                   {username === singleBlog.user.username && (
-                    <button onClick={() => deleteBlog(singleBlog)}>remove</button>
+                    <button onClick={() => deleteBlog(singleBlog)}>
+                      remove
+                    </button>
                   )}
                   {singleBlog.user && singleBlog.user.name ? (
                     <p>{singleBlog.user.name}</p>
@@ -65,4 +78,3 @@ const Blog = ({ blogs, increaseLike, deleteBlog, nameOfCreator, username }) => {
 };
 
 export default Blog;
-

@@ -1,16 +1,16 @@
-import { useState, forwardRef, useImperativeHandle } from 'react';
+import { useState, forwardRef, useImperativeHandle } from "react";
 
 const Togglable = forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
 
-  const hideWhenVisible = { display: visible ? 'none' : '' };
-  const showWhenVisible = { display: visible ? '' : 'none' };
+  const hideWhenVisible = { display: visible ? "none" : "" };
+  const showWhenVisible = { display: visible ? "" : "none" };
   const specialInformationStyle = {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     paddingTop: 10,
     paddingLeft: 2,
-    border: 'solid',
+    border: "solid",
     borderWidth: 1,
     marginBottom: 5,
   };
@@ -22,9 +22,9 @@ const Togglable = forwardRef((props, ref) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: 'solid',
+    border: "solid",
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
   };
 
   const toggleVisibility = () => {
@@ -33,7 +33,7 @@ const Togglable = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => {
     return {
-      toggleVisibility
+      toggleVisibility,
     };
   });
 
@@ -52,19 +52,17 @@ const Togglable = forwardRef((props, ref) => {
 
       {props.specialInformation && (
         <div style={showWhenVisible}>
-            <div style = {blogStyle}>
-        <p>{props.specialInformation}</p>
-          {props.children}
-          <button onClick={toggleVisibility}>hide</button>
-        </div>
+          <div style={blogStyle}>
+            <p>{props.specialInformation}</p>
+            {props.children}
+            <button onClick={toggleVisibility}>hide</button>
+          </div>
         </div>
       )}
 
       {!props.specialInformation && (
         <div style={hideWhenVisible}>
-          <button onClick={toggleVisibility}>
-            {props.buttonLabel}
-          </button>
+          <button onClick={toggleVisibility}>{props.buttonLabel}</button>
         </div>
       )}
 
@@ -78,6 +76,6 @@ const Togglable = forwardRef((props, ref) => {
   );
 });
 
-Togglable.displayName = 'Togglable'
+Togglable.displayName = "Togglable";
 
 export default Togglable;
