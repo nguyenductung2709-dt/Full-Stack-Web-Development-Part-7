@@ -6,14 +6,13 @@ import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import { setNotification } from "./reducers/notificationReducer";
-import { useSelector, useDispatch } from 'react-redux';
-import { initializeBlogs } from './reducers/blogReducer'
-import { setUsers, logOutUser } from './reducers/userReducer'
-
+import { useSelector, useDispatch } from "react-redux";
+import { initializeBlogs } from "./reducers/blogReducer";
+import { setUsers, logOutUser } from "./reducers/userReducer";
 
 const App = () => {
-  const blogs = useSelector(state => state.blog);
-  const user = useSelector(state => state.user);
+  const blogs = useSelector((state) => state.blog);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +28,6 @@ const App = () => {
       }
     }
   }, []);
-  
 
   const handleLogin = async (event) => {
     try {
@@ -45,12 +43,9 @@ const App = () => {
   };
 
   if (user != null) {
-    window.localStorage.setItem(
-      "loggedBlogappUser",
-      JSON.stringify(user)
-    );
+    window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
   }
-  
+
   const handleLogout = () => {
     try {
       window.localStorage.removeItem("loggedBlogappUser");
@@ -60,12 +55,12 @@ const App = () => {
       dispatch(setNotification(`Error logging out: ${error.message}`, 2000));
     }
   };
-  
+
   const blogFormRef = useRef();
 
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
-      <BlogForm/>
+      <BlogForm />
     </Togglable>
   );
 
@@ -107,14 +102,10 @@ const App = () => {
         <p>{user.name} logged in</p>{" "}
         <button onClick={handleLogout}>logout</button>
         {blogForm()}
-        <Blog
-          blogs={blogs}
-          username = {user.username}
-        />
+        <Blog blogs={blogs} username={user.username} />
       </div>
     );
   }
-}
-
+};
 
 export default App;

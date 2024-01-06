@@ -19,8 +19,8 @@ const Blog = ({ blogs, username }) => {
       dispatch(
         setNotification(
           `Liked blog: ${blogToLike.title} by ${blogToLike.author}`,
-          2000
-        )
+          2000,
+        ),
       );
       dispatch(initializeBlogs());
     }
@@ -33,8 +33,8 @@ const Blog = ({ blogs, username }) => {
       dispatch(
         setNotification(
           `Deleted blog: ${blogToDelete.title} by ${blogToDelete.author}`,
-          2000
-        )
+          2000,
+        ),
       );
     }
   };
