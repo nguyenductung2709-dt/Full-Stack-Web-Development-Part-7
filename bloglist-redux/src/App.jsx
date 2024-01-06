@@ -5,6 +5,7 @@ import BlogForm from "./components/BlogForm";
 import LoginForm from "./components/LoginForm";
 import UsersPage from "./components/UsersPage";
 import UserPage from "./components/UserPage";
+import SingleBlogPage from "./components/SingleBlogPage";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import { setNotification } from "./reducers/notificationReducer";
@@ -82,6 +83,7 @@ const App = () => {
           } />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserPage/>} />
+          <Route path="/blogs/:id" element={<SingleBlogPage username={user.username} />} />
         </Routes>
       </Router>
       </div>
