@@ -1,22 +1,25 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useDispatch } from 'react-redux'
+import { createBlogs } from "../reducers/blogReducer"; 
+import { setNotification} from "../reducers/notificationReducer"; 
 
-const BlogForm = ({ createBlog }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+const BlogForm = () => {
+  const dispatch = useDispatch()
 
   const addBlog = (event) => {
     event.preventDefault();
-    createBlog({
-      title: title,
-      author: author,
-      url: url,
-    });
-
-    setTitle("");
-    setAuthor("");
-    setUrl("");
+    const title = event.target.title.value
+    const author = event.target.author.value 
+    const url = event.target.url.value
+    event.target.title.value = ''
+    event.target.author.value = ''
+    event.target.url.value = ''
+    dispatch(createBlogs(title, author, url))
+    dispatch(
+      setNotification(
+        `a blog ${title} by ${author} added`,
+        2000,
+      ),
+    );
   };
 
   return (
@@ -26,9 +29,7 @@ const BlogForm = ({ createBlog }) => {
         <input
           id="title"
           type="text"
-          value={title}
-          name="Title"
-          onChange={({ target }) => setTitle(target.value)}
+          name="title"
           placeholder="Title"
         />
       </div>
@@ -37,9 +38,7 @@ const BlogForm = ({ createBlog }) => {
         <input
           id="author"
           type="text"
-          value={author}
-          name="Author"
-          onChange={({ target }) => setAuthor(target.value)}
+          name="author"
           placeholder="Author"
         />
       </div>
@@ -48,9 +47,7 @@ const BlogForm = ({ createBlog }) => {
         <input
           id="url"
           type="text"
-          value={url}
-          name="Url"
-          onChange={({ target }) => setUrl(target.value)}
+          name="url"
           placeholder="Url"
         />
       </div>
@@ -58,9 +55,4 @@ const BlogForm = ({ createBlog }) => {
     </form>
   );
 };
-
-BlogForm.propTypes = {
-  createBlog: PropTypes.func.isRequired,
-};
-
 export default BlogForm;

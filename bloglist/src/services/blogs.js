@@ -12,10 +12,17 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
-const create = async (newObject) => {
+const createNew = async (title, author, url) => {
   const config = {
     headers: { Authorization: token },
   };
+
+  const newObject = {
+    title: title,
+    author: author,
+    url: url,
+    likes: 0
+  }
 
   const response = await axios.post(baseUrl, newObject, config);
   return response.data;
@@ -40,4 +47,4 @@ const remove = async (idOfDeletedBlog) => {
   return response.data;
 };
 
-export default { setToken, getAll, create, update, remove };
+export default { setToken, getAll, createNew, update, remove };

@@ -5,13 +5,12 @@ import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
-import { useDispatch } from 'react-redux'
-import { setNotification } from './reducers/notificationReducer'
-import PropTypes from "prop-types";
+import { setNotification } from "./reducers/notificationReducer";
+import { useSelector, useDispatch } from 'react-redux';
+import { initializeBlogs } from './reducers/blogReducer'
 
 const App = () => {
-  const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([]);
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -19,11 +18,10 @@ const App = () => {
   const [loggedInUsername, setLoggedInUsername] = useState("");
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => {
-      const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
-      setBlogs(sortedBlogs);
-    });
-  }, []);
+    dispatch(initializeBlogs()) 
+  }, [])
+
+  const blogs = useSelector(state => state.blog)
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -72,19 +70,9 @@ const App = () => {
 
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
-      <BlogForm createBlog={addBlog} />
+      <BlogForm/>
     </Togglable>
   );
-
-  const addBlog = (blogObject) => {
-    blogFormRef.current.toggleVisibility();
-    blogService.create(blogObject).then((returnedBlog) => {
-      returnedBlog.user = user;
-      setNameOfCreator(user.name);
-      setBlogs(blogs.concat(returnedBlog));
-      dispatch(setNotification(`a blog ${blogObject.title} by ${blogObject.author} added`, 2000));
-    });
-  };
 
   const handleLike = (blog) => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 };
@@ -98,7 +86,12 @@ const App = () => {
         );
         const sortedBlogs = updatedBlogs.sort((a, b) => b.likes - a.likes);
         setBlogs(sortedBlogs);
-        dispatch(setNotification(`Liked blog: ${returnedBlog.title} by ${returnedBlog.author}`, 2000));
+        dispatch(
+          setNotification(
+            `Liked blog: ${returnedBlog.title} by ${returnedBlog.author}`,
+            2000,
+          ),
+        );
       })
       .catch((error) => {
         dispatch(setNotification("Failed to like the blog", 2000));
@@ -116,7 +109,12 @@ const App = () => {
           (blog) => blog.id !== blogToDelete.id,
         );
         setBlogs(updatedBlogs);
-        dispatch(setNotification(`Deleted blog: ${blogToDelete.title} by ${blogToDelete.author}`, 2000));
+        dispatch(
+          setNotification(
+            `Deleted blog: ${blogToDelete.title} by ${blogToDelete.author}`,
+            2000,
+          ),
+        );
       }
     } catch (error) {
       dispatch(setNotification("Failed to delete the blog", 2000));
@@ -160,7 +158,7 @@ const App = () => {
   } else {
     return (
       <div>
-        <Notification/>
+        <Notification />
         <h2>blogs</h2>
         <p>{user.name} logged in</p>{" "}
         <button onClick={handleLogout}>logout</button>
