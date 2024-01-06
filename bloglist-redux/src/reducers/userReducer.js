@@ -23,6 +23,7 @@ export const setUsers = (username, password) => {
     };
     const user = await loginService.login(userObject);
     dispatch(setUser(user));
+    window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
   };
 };
 

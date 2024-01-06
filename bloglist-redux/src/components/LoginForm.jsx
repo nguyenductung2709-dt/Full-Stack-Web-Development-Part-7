@@ -21,11 +21,7 @@ const LoginForm = () => {
       dispatch(setNotification(`Error logging in: ${error.message}`, 2000));
     }
   };
-
-  if (user != null) {
-    window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-   }
-
+  
   return (
     <form onSubmit={handleLogin}>
       <div>
