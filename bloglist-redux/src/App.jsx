@@ -4,11 +4,13 @@ import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
-import loginService from "./services/login";
 import { setNotification } from "./reducers/notificationReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { initializeBlogs } from "./reducers/blogReducer";
 import { setUsers, logOutUser } from "./reducers/userReducer";
+import LoginForm from "./components/LoginForm";
+import { BrowserRouter as Router, Routes, Route, Link, useMatch, Navigate } from 'react-router-dom';
+
 
 const App = () => {
   const blogs = useSelector((state) => state.blog);
@@ -28,23 +30,6 @@ const App = () => {
       }
     }
   }, []);
-
-  const handleLogin = async (event) => {
-    try {
-      event.preventDefault();
-      const username = event.target.username.value;
-      const password = event.target.password.value;
-      event.target.username.value = "";
-      event.target.password.value = "";
-      await dispatch(setUsers(username, password));
-    } catch (error) {
-      dispatch(setNotification(`Error logging in: ${error.message}`, 2000));
-    }
-  };
-
-  if (user != null) {
-    window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-  }
 
   const handleLogout = () => {
     try {
@@ -69,29 +54,7 @@ const App = () => {
       <>
         <Notification />
         <h2>Log in to application</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              id="username"
-              type="text"
-              name="username"
-              placeholder="Username"
-            />
-          </div>
-          <div>
-            password
-            <input
-              id="password"
-              type="password"
-              name="password"
-              placeholder="Password"
-            />
-          </div>
-          <button id="login-button" type="submit">
-            login
-          </button>
-        </form>
+        <LoginForm/>
       </>
     );
   } else {
