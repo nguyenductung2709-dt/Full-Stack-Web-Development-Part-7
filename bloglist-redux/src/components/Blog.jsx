@@ -7,7 +7,7 @@ import {
 import { setNotification } from "../reducers/notificationReducer";
 import { useSelector, useDispatch } from "react-redux";
 
-const Blog = ({ blogs, nameOfCreator, username }) => {
+const Blog = ({ blogs, username }) => {
   const [visibleBlogs, setVisibleBlogs] = useState({});
 
   const dispatch = useDispatch();
@@ -19,8 +19,8 @@ const Blog = ({ blogs, nameOfCreator, username }) => {
       dispatch(
         setNotification(
           `Liked blog: ${blogToLike.title} by ${blogToLike.author}`,
-          2000,
-        ),
+          2000
+        )
       );
       dispatch(initializeBlogs());
     }
@@ -33,8 +33,8 @@ const Blog = ({ blogs, nameOfCreator, username }) => {
       dispatch(
         setNotification(
           `Deleted blog: ${blogToDelete.title} by ${blogToDelete.author}`,
-          2000,
-        ),
+          2000
+        )
       );
     }
   };
@@ -100,9 +100,7 @@ const Blog = ({ blogs, nameOfCreator, username }) => {
                   )}
                   {singleBlog.user && singleBlog.user.name ? (
                     <p>{singleBlog.user.name}</p>
-                  ) : (
-                    <p>{nameOfCreator}</p>
-                  )}
+                  ) : null}
                 </div>
               )}
             </div>

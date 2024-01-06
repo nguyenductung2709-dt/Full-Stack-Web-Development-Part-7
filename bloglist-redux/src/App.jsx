@@ -8,64 +8,59 @@ import loginService from "./services/login";
 import { setNotification } from "./reducers/notificationReducer";
 import { useSelector, useDispatch } from 'react-redux';
 import { initializeBlogs } from './reducers/blogReducer'
+import { setUsers, logOutUser } from './reducers/userReducer'
+
 
 const App = () => {
+  const blogs = useSelector(state => state.blog);
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
-  const [nameOfCreator, setNameOfCreator] = useState("");
-  const [loggedInUsername, setLoggedInUsername] = useState("");
 
   useEffect(() => {
-    dispatch(initializeBlogs()) 
-  }, [])
-
-  const blogs = useSelector(state => state.blog)
+    dispatch(initializeBlogs());
+  }, [dispatch]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      setLoggedInUsername(user.username);
-      blogService.setToken(user.token);
+      if (user && user.token) {
+        blogService.setToken(user.token);
+      }
     }
   }, []);
+  
 
   const handleLogin = async (event) => {
-    event.preventDefault();
-
     try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-      blogService.setToken(user.token);
-      setUser(user);
-      setLoggedInUsername(user.username);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      dispatch(setNotification("wrong username or password", 2000));
+      event.preventDefault();
+      const username = event.target.username.value;
+      const password = event.target.password.value;
+      event.target.username.value = "";
+      event.target.password.value = "";
+      await dispatch(setUsers(username, password));
+    } catch (error) {
+      dispatch(setNotification(`Error logging in: ${error.message}`, 2000));
     }
   };
 
-  const handleLogout = async (event) => {
-    event.preventDefault();
-
+  if (user != null) {
+    window.localStorage.setItem(
+      "loggedBlogappUser",
+      JSON.stringify(user)
+    );
+  }
+  
+  const handleLogout = () => {
     try {
       window.localStorage.removeItem("loggedBlogappUser");
       blogService.setToken(null);
-      setUser(null);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      dispatch(setNotification("Error logging out", 2000));
+      dispatch(logOutUser());
+    } catch (error) {
+      dispatch(setNotification(`Error logging out: ${error.message}`, 2000));
     }
   };
-
+  
   const blogFormRef = useRef();
 
   const blogForm = () => (
@@ -85,9 +80,7 @@ const App = () => {
             <input
               id="username"
               type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
+              name="username"
               placeholder="Username"
             />
           </div>
@@ -96,9 +89,7 @@ const App = () => {
             <input
               id="password"
               type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
+              name="password"
               placeholder="Password"
             />
           </div>
@@ -118,8 +109,7 @@ const App = () => {
         {blogForm()}
         <Blog
           blogs={blogs}
-          nameOfCreator={nameOfCreator}
-          username={loggedInUsername}
+          username = {user.username}
         />
       </div>
     );
