@@ -2,15 +2,22 @@ import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
+import LoginForm from "./components/LoginForm";
+import UsersPage from "./components/UsersPage";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import { setNotification } from "./reducers/notificationReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { initializeBlogs } from "./reducers/blogReducer";
 import { setUsers, logOutUser } from "./reducers/userReducer";
-import LoginForm from "./components/LoginForm";
-import { BrowserRouter as Router, Routes, Route, Link, useMatch, Navigate } from 'react-router-dom';
-
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useMatch,
+  Navigate,
+} from "react-router-dom";
 
 const App = () => {
   const blogs = useSelector((state) => state.blog);
@@ -54,7 +61,7 @@ const App = () => {
       <>
         <Notification />
         <h2>Log in to application</h2>
-        <LoginForm/>
+        <LoginForm />
       </>
     );
   } else {
@@ -64,8 +71,17 @@ const App = () => {
         <h2>blogs</h2>
         <p>{user.name} logged in</p>{" "}
         <button onClick={handleLogout}>logout</button>
-        {blogForm()}
-        <Blog blogs={blogs} username={user.username} />
+      <Router>
+        <Routes>
+          <Route path="/" element={
+            <>
+            {blogForm()}
+            <Blog blogs={blogs} username={user.username} />
+            </>
+          } />
+          <Route path="/users" element={<UsersPage />} />
+        </Routes>
+      </Router>
       </div>
     );
   }

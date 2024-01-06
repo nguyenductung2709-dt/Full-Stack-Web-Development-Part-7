@@ -3,10 +3,9 @@ import { useDispatch } from "react-redux";
 import { setUsers } from "../reducers/userReducer";
 import { useSelector } from "react-redux";
 
-
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user)
+  const user = useSelector((state) => state.user);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -21,7 +20,7 @@ const LoginForm = () => {
       dispatch(setNotification(`Error logging in: ${error.message}`, 2000));
     }
   };
-  
+
   return (
     <form onSubmit={handleLogin}>
       <div>
