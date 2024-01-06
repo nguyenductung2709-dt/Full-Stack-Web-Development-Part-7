@@ -21,8 +21,8 @@ const createNew = async (title, author, url) => {
     title: title,
     author: author,
     url: url,
-    likes: 0
-  }
+    likes: 0,
+  };
 
   const response = await axios.post(baseUrl, newObject, config);
   return response.data;

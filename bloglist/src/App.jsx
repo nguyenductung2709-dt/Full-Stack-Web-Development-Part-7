@@ -74,53 +74,6 @@ const App = () => {
     </Togglable>
   );
 
-  const handleLike = (blog) => {
-    const updatedBlog = { ...blog, likes: blog.likes + 1 };
-
-    blogService
-      .update(updatedBlog)
-      .then((returnedBlog) => {
-        setNameOfCreator(user.name);
-        const updatedBlogs = blogs.map((blogItem) =>
-          blogItem.id === returnedBlog.id ? returnedBlog : blogItem,
-        );
-        const sortedBlogs = updatedBlogs.sort((a, b) => b.likes - a.likes);
-        setBlogs(sortedBlogs);
-        dispatch(
-          setNotification(
-            `Liked blog: ${returnedBlog.title} by ${returnedBlog.author}`,
-            2000,
-          ),
-        );
-      })
-      .catch((error) => {
-        dispatch(setNotification("Failed to like the blog", 2000));
-      });
-  };
-
-  const deleteBlog = async (blogToDelete) => {
-    try {
-      const confirmed = window.confirm(
-        `Remove blog ${blogToDelete.title} by ${blogToDelete.author}`,
-      );
-      if (confirmed) {
-        await blogService.remove(blogToDelete.id);
-        const updatedBlogs = blogs.filter(
-          (blog) => blog.id !== blogToDelete.id,
-        );
-        setBlogs(updatedBlogs);
-        dispatch(
-          setNotification(
-            `Deleted blog: ${blogToDelete.title} by ${blogToDelete.author}`,
-            2000,
-          ),
-        );
-      }
-    } catch (error) {
-      dispatch(setNotification("Failed to delete the blog", 2000));
-    }
-  };
-
   if (user === null) {
     return (
       <>
@@ -165,14 +118,13 @@ const App = () => {
         {blogForm()}
         <Blog
           blogs={blogs}
-          increaseLike={handleLike}
-          deleteBlog={deleteBlog}
           nameOfCreator={nameOfCreator}
           username={loggedInUsername}
         />
       </div>
     );
   }
-};
+}
+
 
 export default App;

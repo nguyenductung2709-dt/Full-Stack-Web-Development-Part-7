@@ -1,7 +1,43 @@
 import React, { useState } from "react";
+import {
+  handleLike,
+  initializeBlogs,
+  removeBlog,
+} from "../reducers/blogReducer";
+import { setNotification } from "../reducers/notificationReducer";
+import { useSelector, useDispatch } from "react-redux";
 
-const Blog = ({ blogs, increaseLike, deleteBlog, nameOfCreator, username }) => {
+const Blog = ({ blogs, nameOfCreator, username }) => {
   const [visibleBlogs, setVisibleBlogs] = useState({});
+
+  const dispatch = useDispatch();
+
+  const increaseLike = (id) => {
+    const blogToLike = blogs.find((blog) => blog.id === id);
+    if (blogToLike) {
+      dispatch(handleLike(id));
+      dispatch(
+        setNotification(
+          `Liked blog: ${blogToLike.title} by ${blogToLike.author}`,
+          2000,
+        ),
+      );
+      dispatch(initializeBlogs());
+    }
+  };
+
+  const deleteBlog = (id) => {
+    const blogToDelete = blogs.find((blog) => blog.id === id);
+    if (blogToDelete) {
+      dispatch(removeBlog(id));
+      dispatch(
+        setNotification(
+          `Deleted blog: ${blogToDelete.title} by ${blogToDelete.author}`,
+          2000,
+        ),
+      );
+    }
+  };
 
   const toggleVisibility = (blogId) => {
     setVisibleBlogs((prevVisibleBlogs) => ({
@@ -52,13 +88,13 @@ const Blog = ({ blogs, increaseLike, deleteBlog, nameOfCreator, username }) => {
                     Likes: {singleBlog.likes}{" "}
                     <button
                       id={likeButtonId}
-                      onClick={() => increaseLike(singleBlog)}
+                      onClick={() => increaseLike(singleBlog.id)}
                     >
                       like
                     </button>
                   </p>
                   {singleBlog.user && username === singleBlog.user.username && (
-                    <button onClick={() => deleteBlog(singleBlog)}>
+                    <button onClick={() => deleteBlog(singleBlog.id)}>
                       remove
                     </button>
                   )}
