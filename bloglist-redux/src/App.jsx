@@ -4,6 +4,7 @@ import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 import LoginForm from "./components/LoginForm";
 import UsersPage from "./components/UsersPage";
+import UserPage from "./components/UserPage";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import { setNotification } from "./reducers/notificationReducer";
@@ -80,6 +81,7 @@ const App = () => {
             </>
           } />
           <Route path="/users" element={<UsersPage />} />
+          <Route path="/users/:id" element={<UserPage/>} />
         </Routes>
       </Router>
       </div>

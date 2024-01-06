@@ -24,7 +24,7 @@ const UsersPage = () => {
         <tbody>
           {users.map((user, index) => (
             <tr key={index}>
-              <td>{user.username}</td>
+              <td><a href={`/users/${user.id}`}>{user.username}</a></td>
               <td>{user.blogs.length}</td>
             </tr>
           ))}
