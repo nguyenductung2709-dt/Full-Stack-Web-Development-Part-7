@@ -12,6 +12,12 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
+const getComments = (id) => {
+  const updatedUrl = `${baseUrl}/${id}/comments`
+  const request = axios.get(updatedUrl);
+  return request.then((response) => response.data);
+}
+
 const createNew = async (title, author, url) => {
   const config = {
     headers: { Authorization: token },
@@ -47,4 +53,4 @@ const remove = async (idOfDeletedBlog) => {
   return response.data;
 };
 
-export default { setToken, getAll, createNew, update, remove };
+export default { setToken, getAll, createNew, update, remove, getComments };
