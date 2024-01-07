@@ -60,21 +60,20 @@ const SingleBlogPage = ({ username }) => {
     dispatch(createComment(id, comment));
   };
 
+  const buttonStyle = {
+    borderRadius: 5,
+    background: "skyblue",
+    border: "0.5px solid black",
+    color: "white",
+    marginLeft: 10,
+  }
+
   if (!blog) {
     return <p>Loading...</p>;
   }
 
   return (
     <>
-      <Form onSubmit={addComment}>
-        <Form.Group className="mb-3">
-          <Form.Control id="title" type="text" name="comment" placeholder="Enter your comment" />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Add Comment
-        </Button>
-      </Form>
-
       <div key={blog.id} id="single-blog">
         <div id="blog-post">
           <h1>
@@ -83,11 +82,11 @@ const SingleBlogPage = ({ username }) => {
           <a href={`${blog.url}`}> {blog.url} </a>
           <p>
             {blog.likes} likes
-            <button onClick={() => increaseLike(blog.id)}>Like</button>
+            <button style = {buttonStyle} onClick={() => increaseLike(blog.id)}>Like</button>
           </p>
           {blog.user && <p>added by {blog.user.name}</p>}
           {blog.user && username === blog.user.username && (
-            <button onClick={() => deleteBlog(blog.id)}>Delete</button>
+            <button style = {buttonStyle} onClick={() => deleteBlog(blog.id)}>Delete</button>
           )}
           <div>
             <h2>Comments</h2>
@@ -99,6 +98,14 @@ const SingleBlogPage = ({ username }) => {
           </div>
         </div>
       </div>
+      <Form onSubmit={addComment}>
+        <Form.Group className="mb-3">
+          <Form.Control id="title" type="text" name="comment" placeholder="Enter your comment" />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Add Comment
+        </Button>
+      </Form>
     </>
   );
 };

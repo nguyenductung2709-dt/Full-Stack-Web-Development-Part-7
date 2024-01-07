@@ -43,11 +43,11 @@ const App = () => {
 
   const Menu = () => {
     const menuStyle = {
-      color: 'white'
+      borderBottom: '1px solid black',
     };
   
     const padding = {
-      color: 'white',
+      color: 'black',
       paddingRight: 20
     };
 
@@ -57,23 +57,23 @@ const App = () => {
     };
   
     const logoutButtonStyle = {
-      marginLeft: '10px'
+      marginLeft: '10px',
+      background: "blue"
     };
   
     return (
-      <div style = {menuStyle}>
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+      <Navbar style = {menuStyle} collapseOnSelect expand="lg" bg="white" variant="dark">
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <Nav.Item>
               <a href ="/" style={padding} className="nav-link">
-                blogs
+                Blogs
               </a>
             </Nav.Item>
             <Nav.Item>
               <a href ="/users" style={padding} className="nav-link">
-                users
+                Users
               </a>
             </Nav.Item>
             <Nav.Item>
@@ -87,18 +87,7 @@ const App = () => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      </div>
     );
-
-    /*
-    return (
-      <div style={menuStyle}>
-        <a href='/' style={padding}>blogs</a>
-        <a href='/users' style={padding}>users</a>
-        <p style={padding}>{user.name} logged in</p>
-        <button onClick={handleLogout} style={logoutButtonStyle}>logout</button>
-      </div>
-    );*/
   };
   
   const handleLogout = () => {
@@ -132,7 +121,7 @@ const App = () => {
       <div>
         <Notification />
         {Menu()}
-        <h2>blog app</h2>
+        <h1 className = "h1blogapp">Blog App</h1>
       <Router>
         <Routes>
           <Route path="/" element={
