@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   handleLike,
   initializeBlogs,
   removeBlog,
 } from "../reducers/blogReducer";
-import { initializeComments } from "../reducers/commentReducer";
+import { initializeComments, createComment } from "../reducers/commentReducer";
 import { setNotification } from "../reducers/notificationReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -13,18 +13,14 @@ const SingleBlogPage = ({ username }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const blogs = useSelector((state) => state.blog);
-  const comments = useSelector((state) => state.comments); 
-  const [visibleBlog, setVisibleBlog] = useState(null);
+  const comments = useSelector((state) => state.comments);
 
   useEffect(() => {
     dispatch(initializeBlogs());
-    dispatch(initializeComments(id)); 
+    dispatch(initializeComments(id));
   }, [dispatch, id]);
 
-  useEffect(() => {
-    const blog = blogs.find((blog) => blog.id === id);
-    setVisibleBlog(blog);
-  }, [blogs, id]);
+  const blog = blogs.find((blog) => blog.id === id);
 
   const increaseLike = (id) => {
     const blogToLike = blogs.find((blog) => blog.id === id);
@@ -40,6 +36,8 @@ const SingleBlogPage = ({ username }) => {
     }
   };
 
+  console.log(comments)
+  
   const deleteBlog = (id) => {
     const blogToDelete = blogs.find((blog) => blog.id === id);
     if (blogToDelete) {
@@ -53,42 +51,51 @@ const SingleBlogPage = ({ username }) => {
     }
   };
 
-  const toggleVisibility = () => {
-    setVisibleBlog((prevVisibleBlog) => ({
-      ...prevVisibleBlog,
-      visible: !prevVisibleBlog.visible,
-    }));
+  const addComment = (event) => {
+    event.preventDefault();
+    const comment = event.target.comment.value;
+    event.target.comment.value = "";
+    dispatch(createComment(id, comment));
   };
 
-  if (!visibleBlog) {
+  if (!blog) {
     return <p>Loading...</p>;
   }
 
   return (
-    <div key={visibleBlog.id} id="single-blog">
-      <div id="blog-post">
-        <h1>
-          {visibleBlog.title} by {visibleBlog.author}
-        </h1>
-        <a href = {`${visibleBlog.url}`}> {visibleBlog.url} </a>
-        <p>
-          {visibleBlog.likes} likes
-          <button onClick={() => increaseLike(visibleBlog.id)}>Like</button>
-        </p>
-        {visibleBlog.user && <p>added by {visibleBlog.user.name}</p>}
-        {visibleBlog.user && username === visibleBlog.user.username && (
-          <button onClick={() => deleteBlog(visibleBlog.id)}>Delete</button>
-        )}
+    <>
+      <form onSubmit={addComment}>
         <div>
-          <h2>Comments</h2>
-          <ul>
-          {comments.map((comment, index) => (
-            <li key={index}>{comment} </li>
-          ))}
-          </ul>
+          <input id="title" type="text" name="comment" />
+        </div>
+        <button type="submit">add comment</button>
+      </form>
+
+      <div key={blog.id} id="single-blog">
+        <div id="blog-post">
+          <h1>
+            {blog.title} by {blog.author}
+          </h1>
+          <a href={`${blog.url}`}> {blog.url} </a>
+          <p>
+            {blog.likes} likes
+            <button onClick={() => increaseLike(blog.id)}>Like</button>
+          </p>
+          {blog.user && <p>added by {blog.user.name}</p>}
+          {blog.user && username === blog.user.username && (
+            <button onClick={() => deleteBlog(blog.id)}>Delete</button>
+          )}
+          <div>
+            <h2>Comments</h2>
+            <ul>
+              {comments.map((comment, index) => (
+                <li key={index}>{comment}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

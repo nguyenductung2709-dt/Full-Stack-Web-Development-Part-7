@@ -7,11 +7,14 @@ const commentSlice = createSlice({
     reducers: {
         setComments: (state, action) => {
             return action.payload;
-        }
+        },
+        createComments: (state, action) => {
+            return [...state, action.payload];
+          },
     }
 })
 
-export const { setComments } = commentSlice.actions;
+export const { setComments, createComments } = commentSlice.actions;
 export default commentSlice.reducer;
 export const initializeComments = (id) => {
     return async (dispatch) => {
@@ -19,3 +22,11 @@ export const initializeComments = (id) => {
       dispatch(setComments(comments))
     }
   }
+
+export const createComment = (id, comment) => {
+    return async (dispatch) => {
+      const newComment = await blogService.createComment(id, comment)
+      console.log(newComment)
+      dispatch(createComments(newComment.comments[newComment.comments.length -1]))
+    }
+}
