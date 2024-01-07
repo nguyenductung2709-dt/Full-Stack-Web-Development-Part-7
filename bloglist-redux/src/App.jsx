@@ -40,6 +40,30 @@ const App = () => {
     }
   }, []);
 
+  const Menu = () => {
+    const menuStyle = {
+      display: 'flex',
+      alignItems: 'center'
+    };
+  
+    const padding = {
+      paddingRight: 5
+    };
+  
+    const logoutButtonStyle = {
+      marginLeft: '10px'
+    };
+  
+    return (
+      <div style={menuStyle}>
+        <a href='/' style={padding}>blogs</a>
+        <a href='/users' style={padding}>users</a>
+        <p style={padding}>{user.name} logged in</p>
+        <button onClick={handleLogout} style={logoutButtonStyle}>logout</button>
+      </div>
+    );
+  };
+  
   const handleLogout = () => {
     try {
       window.localStorage.removeItem("loggedBlogappUser");
@@ -70,9 +94,8 @@ const App = () => {
     return (
       <div>
         <Notification />
-        <h2>blogs</h2>
-        <p>{user.name} logged in</p>{" "}
-        <button onClick={handleLogout}>logout</button>
+        {Menu()}
+        <h2>blog app</h2>
       <Router>
         <Routes>
           <Route path="/" element={
