@@ -8,6 +8,7 @@ import UserPage from "./components/UserPage";
 import SingleBlogPage from "./components/SingleBlogPage";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
+import { Navbar, Nav } from 'react-bootstrap';
 import { setNotification } from "./reducers/notificationReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { initializeBlogs } from "./reducers/blogReducer";
@@ -42,12 +43,17 @@ const App = () => {
 
   const Menu = () => {
     const menuStyle = {
-      display: 'flex',
-      alignItems: 'center'
+      color: 'white'
     };
   
     const padding = {
-      paddingRight: 5
+      color: 'white',
+      paddingRight: 20
+    };
+
+    const padding_p = {
+      paddingTop: 8,
+      paddingRight: 20
     };
   
     const logoutButtonStyle = {
@@ -55,13 +61,44 @@ const App = () => {
     };
   
     return (
+      <div style = {menuStyle}>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Item>
+              <a href ="/" style={padding} className="nav-link">
+                blogs
+              </a>
+            </Nav.Item>
+            <Nav.Item>
+              <a href ="/users" style={padding} className="nav-link">
+                users
+              </a>
+            </Nav.Item>
+            <Nav.Item>
+              <p style={padding_p}>{user.name} logged in</p>
+            </Nav.Item>
+            <Nav.Item>
+              <button onClick={handleLogout} style={logoutButtonStyle} className="btn btn-outline-light">
+              logout
+            </button>
+            </Nav.Item>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+      </div>
+    );
+
+    /*
+    return (
       <div style={menuStyle}>
         <a href='/' style={padding}>blogs</a>
         <a href='/users' style={padding}>users</a>
         <p style={padding}>{user.name} logged in</p>
         <button onClick={handleLogout} style={logoutButtonStyle}>logout</button>
       </div>
-    );
+    );*/
   };
   
   const handleLogout = () => {

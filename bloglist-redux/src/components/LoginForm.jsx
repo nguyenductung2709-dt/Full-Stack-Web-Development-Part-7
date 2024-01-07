@@ -2,6 +2,8 @@ import { setNotification } from "../reducers/notificationReducer";
 import { useDispatch } from "react-redux";
 import { setUsers } from "../reducers/userReducer";
 import { useSelector } from "react-redux";
+import { Form, Button } from 'react-bootstrap';
+
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -22,29 +24,29 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
+    <Form onSubmit={handleLogin}>
+      <Form.Group className="mb-3">
+        <Form.Label>Username</Form.Label>
+        <Form.Control
           id="username"
           type="text"
           name="username"
           placeholder="Username"
         />
-      </div>
-      <div>
-        password
-        <input
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
           id="password"
           type="password"
           name="password"
           placeholder="Password"
         />
-      </div>
-      <button id="login-button" type="submit">
-        login
-      </button>
-    </form>
+      </Form.Group>
+      <Button id="login-button" variant="primary" type="submit">
+        Login
+      </Button>
+    </Form>
   );
 };
 

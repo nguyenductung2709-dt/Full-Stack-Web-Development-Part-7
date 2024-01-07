@@ -8,6 +8,8 @@ import { initializeComments, createComment } from "../reducers/commentReducer";
 import { setNotification } from "../reducers/notificationReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { Form, Button } from 'react-bootstrap';
+
 
 const SingleBlogPage = ({ username }) => {
   const dispatch = useDispatch();
@@ -37,7 +39,7 @@ const SingleBlogPage = ({ username }) => {
   };
 
   console.log(comments)
-  
+
   const deleteBlog = (id) => {
     const blogToDelete = blogs.find((blog) => blog.id === id);
     if (blogToDelete) {
@@ -64,12 +66,14 @@ const SingleBlogPage = ({ username }) => {
 
   return (
     <>
-      <form onSubmit={addComment}>
-        <div>
-          <input id="title" type="text" name="comment" />
-        </div>
-        <button type="submit">add comment</button>
-      </form>
+      <Form onSubmit={addComment}>
+        <Form.Group className="mb-3">
+          <Form.Control id="title" type="text" name="comment" placeholder="Enter your comment" />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Add Comment
+        </Button>
+      </Form>
 
       <div key={blog.id} id="single-blog">
         <div id="blog-post">
@@ -88,7 +92,7 @@ const SingleBlogPage = ({ username }) => {
           <div>
             <h2>Comments</h2>
             <ul>
-              {comments.map((comment, index) => (
+              {comments && comments.map((comment, index) => (
                 <li key={index}>{comment}</li>
               ))}
             </ul>
